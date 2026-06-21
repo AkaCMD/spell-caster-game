@@ -17,15 +17,10 @@ func _ready() -> void:
 
 
 func _start_bgm() -> void:
-	var bgm_stream: AudioStream = BGM_STREAM.duplicate() as AudioStream
-	var bgm_wav: AudioStreamWAV = bgm_stream as AudioStreamWAV
-	if bgm_wav != null:
-		bgm_wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
-
-	bgm_player.stream = bgm_stream
+	bgm_player.stream = BGM_STREAM
 	bgm_player.volume_db = bgm_volume_db
-	bgm_player.stop()
-	bgm_player.play()
+	if not bgm_player.playing:
+		bgm_player.play()
 
 
 func play_spell_succeed() -> void:
