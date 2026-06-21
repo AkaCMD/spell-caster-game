@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody2D
 
+signal spell_cast(origin: Vector2)
+
 @export var move_speed : float = 160.0
 @export var walk_squash_speed : float = 10.0
 @export var walk_squash_amount : float = 0.08
@@ -91,5 +93,6 @@ func _cast_spell() -> void:
 	if _spell_tokens.is_empty():
 		return
 
+	spell_cast.emit(global_position)
 	_spell_tokens.clear()
 	spell_bubble.hide_spell()

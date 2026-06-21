@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://chp7l3d2kb70e"]
+
+[ext_resource type="Script" path="res://src/gameplay/effects/spell_cast_ripple/spell_cast_ripple.gd" id="1_dr455"]
+[ext_resource type="Shader" path="res://src/gameplay/effects/spell_cast_ripple/spell_cast_ripple.gdshader" id="2_4gbcw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sxqrc"]
+shader = ExtResource("2_4gbcw")
+shader_parameter/ripple_color = Color(0.55, 0.95, 1, 1)
+shader_parameter/progress = 0.0
+shader_parameter/effect_size = Vector2(320, 320)
+shader_parameter/max_radius = 0.48
+shader_parameter/ring_spacing = 0.08
+shader_parameter/ring_thickness = 0.012
+shader_parameter/pixel_size = 4.0
+shader_parameter/ring_count = 5
+
+[node name="SpellCastRipple" type="Node2D" unique_id=1189319409]
+script = ExtResource("1_dr455")
+
+[node name="RippleRect" type="ColorRect" parent="." unique_id=2140860054]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_sxqrc")
+offset_left = -160.0
+offset_top = -160.0
+offset_right = 160.0
+offset_bottom = 160.0
+mouse_filter = 2

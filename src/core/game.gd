@@ -6,6 +6,7 @@ extends Node
 # Load test levels for prototype
 const TEST_LEVEL : String = "uid://bvdioybxni18t"
 const PLAYER_SCENE_UID : String = "uid://c82b1y5bnhj85"
+const SPELL_CAST_RIPPLE_SCENE : PackedScene = preload("res://src/gameplay/effects/spell_cast_ripple/spell_cast_ripple.tscn")
 
 var player : Player = null
 
@@ -74,6 +75,17 @@ func _init_player() -> void:
 		return
 		
 	entity_root.add_child(player)
+	player.spell_cast.connect(_spawn_spell_cast_ripple)
+
+
+func _spawn_spell_cast_ripple(origin: Vector2) -> void:
+	var ripple: SpellCastRipple = SPELL_CAST_RIPPLE_SCENE.instantiate() as SpellCastRipple
+	if ripple == null:
+		push_error("Spell cast ripple scene does not extend SpellCastRipple")
+		return
+
+	effect_root.add_child(ripple)
+	ripple.play(origin)
 
 
 ## Finds the default spawn location in currently loaded level, and places
