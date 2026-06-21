@@ -1,147 +1,45 @@
 # Project Instructions
 
+## Project Summary
+
+- This is a Godot 4.7 2D spell-caster prototype. The player moves with WASD, enters spell tokens with arrow keys, and casts with Enter.
+- Main scene is `src/levels/game.tscn` via `project.godot`; `src/core/game.gd` is the runtime coordinator.
+- `Game` owns world layers: `%LevelRoot`, `%EntityRoot`, `%EffectRoot`; runtime gameplay effects should be spawned into `%EffectRoot`, not attached to the player.
+- Prototype level is `src/levels/test_level.tscn`; level scripts must extend `BaseLevel` and provide `get_default_player_spawn()` and `get_player_camera()`.
+
+## Verification
+
+- Prefer the Godot project tools for launch checks. A useful smoke test is running `res://src/levels/game.tscn` and checking debug output for errors.
+- There is no repo-local CI, package manifest, lockfile, or scripted test/lint command currently checked in.
+- `godot` may not be available on the shell `PATH`; do not assume shell Godot commands work unless you verify them first.
+- Use `git diff --check` before commits to catch whitespace errors.
+
+## Editing Godot Files
+
 - Use UTF-8 and LF for all text files.
-- Always using static typing
 - Do not edit files under `.godot/` unless explicitly requested; they are local editor/cache files.
-- Prefer editor-safe changes for Godot resources and scenes. Avoid hand-editing generated or cache files.
+- Prefer editor-safe changes for `.tscn`, `.tres`, `.import`, and UID-backed resources. Avoid hand-editing generated/cache files when a Godot tool can do it safely.
+- Keep `.gd.uid` and `.gdshader.uid` files with their scripts/shaders when Godot creates them.
+- New gameplay effects belong under `src/gameplay/effects/<effect_name>/`; player-specific UI/behavior belongs under `src/gameplay/player/`.
 
-## GDScript Architecture
+## GDScript Conventions
 
-Prefer flat, modular, event-driven, component-based scripts. Godot uses a Scene Tree, but code architecture should not mechanically mirror that tree.
+- Always use static typing for variables, parameters, returns, casts, and `@onready` references where Godot allows it.
+- Prefer flat, modular, event-driven, component-based scripts over deep inheritance or large mixed-responsibility scripts.
+- Use `%UniqueNodeName` for important local scene references and `@export` for editor-assigned dependencies; avoid parent-chain lookups like `get_parent().get_parent()`.
+- Use groups for broad queries/tags and signals for gameplay events. Signal names should describe what happened, not what receivers should do.
+- If a stored node reference is used after `await`, check `is_instance_valid(node)` first.
+- Do not run long blocking work inside `_process`, `_physics_process`, `_input`, or signal callbacks; split long work across frames with `await get_tree().process_frame` when needed.
 
-### Components
+## Current Gameplay Wiring
 
-- Keep each script focused on one clear responsibility.
-- Prefer child-node components for reusable behavior.
-- Do not introduce deep inheritance unless explicitly requested.
-- Avoid giant scripts that mix movement, health, combat, inventory, UI, and dialogue.
+- `src/gameplay/player/player.gd` owns movement, sprite facing/squash, spell token input, and emits `spell_cast(origin)` after a non-empty cast.
+- `src/gameplay/player/spell_bubble.tscn` is an independent UI scene for the player's spell tokens. Keep visual tuning editor-driven; do not hard-code token color or frame opacity in script unless explicitly requested.
+- `src/gameplay/effects/spell_cast_ripple/spell_cast_ripple.tscn` is a runtime effect scene. `Game` instances it and calls `play(origin)` when `Player.spell_cast` fires.
+- Spell tokens currently use ASCII `^`, `v`, `<`, `>` to avoid font glyph issues.
 
-Good structure:
+## Commits
 
-```text
-Player
-├── HealthComponent
-├── MovementComponent
-├── WeaponComponent
-└── InteractionComponent
-```
-
-### Scene References
-
-- Avoid hidden Scene Tree assumptions and parent-chain lookups such as `get_parent().get_parent()`.
-- Use `%UniqueNodeName` for important local scene references.
-- Use `@export` for editor-assigned dependencies.
-- Avoid long hardcoded node paths.
-
-Prefer:
-
-```gdscript
-@onready var weapon: Node2D = %Weapon
-@export var target: Node2D
-```
-
-Avoid:
-
-```gdscript
-$A/B/C/D
-get_parent().get_parent()
-```
-
-### Groups
-
-- Use groups for broad queries, tags, and loose coupling.
-- Prefer groups over manually maintained lists of dynamic nodes.
-
-```gdscript
-for enemy in get_tree().get_nodes_in_group(&"enemies"):
-	enemy.alert()
-```
-
-### Signals
-
-- Use signals for events; signal names should describe what happened, not what receivers should do.
-- Prefer direct high-level signal wiring. (use signal breadboard)
-- Avoid proxy chains like `Child -> Parent -> Grandparent -> Root` when direct high-level wiring is clearer.
-- Keep important gameplay events visible near the coordinator.
-
-Good:
-
-```gdscript
-signal died
-signal health_changed(current: int, max_value: int)
-```
-
-Bad:
-
-```gdscript
-signal update_ui_and_play_damage_flash
-```
-
-### Async And Lifetime Safety
-
-- Check `is_instance_valid(node)` before using stored node references after `await`.
-- Use `queue_free()` for nodes unless there is a specific low-level reason to call `free()`.
-
-Bad:
-
-```gdscript
-var enemy := %Enemy
-enemy.stun()
-
-await get_tree().create_timer(1.0).timeout
-
-enemy.die()
-```
-
-Good:
-
-```gdscript
-var enemy := %Enemy
-enemy.stun()
-
-await get_tree().create_timer(1.0).timeout
-
-if is_instance_valid(enemy):
-	enemy.die()
-```
-
-### Frame Safety
-
-- Do not run long blocking work inside `_process`, `_physics_process`, `_input`, or signal callbacks.
-- Split long work across frames when needed.
-
-```gdscript
-await get_tree().process_frame
-```
-
-### Rewrite Triggers
-
-- If code depends on long node paths or parent chains, rewrite it using `%UniqueNodeName`, `@export` references, groups, or signals.
-- If one script owns unrelated systems, split behavior into focused components.
-- If unrelated scene branches call each other directly, prefer signals, groups, or explicit coordinator wiring.
-- If a stored node reference is used after `await`, validate it before use.
-
-## Commit Messages
-
-- Use Conventional Commits when asked to create or suggest a commit message.
-- Format: `type(scope): summary`.
-- Common types: `feat`, `fix`, `refactor`, `perf`, `chore`, `docs`, `style`, `test`.
-- Use imperative mood and describe the logical intent, not the sequence of edits.
-- Prefer concise, project-relevant scopes such as `scene`, `input`, `ui`, `player`, `config`, or `docs`.
-
-Good:
-
-```text
-feat(player): add movement component
-fix(scene): keep enemy reference valid after await
-refactor(input): split interaction handling
-chore(config): normalize text file settings
-```
-
-Bad:
-
-```text
-feat: update stuff
-fix: fix bug
-chore: changes
-```
+- Use Conventional Commits when asked to create or suggest a commit message: `type(scope): summary`.
+- Prefer concise scopes already used in this repo, such as `level`, `player`, `ui`, `effects`, `scene`, `input`, `config`, or `docs`.
+- Before committing, inspect status, staged diff, and recent commits. Stage only intended files; this repo often has small unrelated scene edits in the worktree.
