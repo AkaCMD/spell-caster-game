@@ -8,7 +8,6 @@ enum DoorState {
 }
 
 @export var required_spell_tokens: PackedStringArray = PackedStringArray(["^", ">", "v"])
-@export var interaction_radius: float = 160.0
 @export var open_duration: float = 0.35
 
 @onready var visual: Polygon2D = %Visual
@@ -22,10 +21,10 @@ func _ready() -> void:
 	_apply_state_visuals()
 
 
-func try_open(cast_origin: Vector2, spell_tokens: PackedStringArray) -> bool:
+func try_open(cast_origin: Vector2, spell_tokens: PackedStringArray, effect_radius: float) -> bool:
 	if state != DoorState.LOCKED:
 		return false
-	if global_position.distance_to(cast_origin) > interaction_radius:
+	if global_position.distance_to(cast_origin) > effect_radius:
 		return false
 	if not _matches_required_spell(spell_tokens):
 		return false

@@ -1,14 +1,17 @@
 class_name Player
 extends CharacterBody2D
 
-signal spell_cast(origin: Vector2, tokens: PackedStringArray)
+signal spell_cast(origin: Vector2, tokens: PackedStringArray, effect_radius: float)
 
 @export var move_speed : float = 160.0
 @export var walk_squash_speed : float = 10.0
 @export var walk_squash_amount : float = 0.08
+@export var spell_effect_radius: float = 160.0
+@export var show_spell_range_indicator: bool = true
 
 @onready var sprite: Sprite2D = %Sprite2D
 @onready var spell_bubble : SpellBubble = %SpellBubble
+@onready var spell_range_indicator: SpellRangeIndicator = %SpellRangeIndicator
 
 var _base_sprite_scale : Vector2 = Vector2.ONE
 var _spell_tokens : PackedStringArray = PackedStringArray()
@@ -17,6 +20,8 @@ var _walk_squash_time : float = 0.0
 
 func _ready() -> void:
 	_base_sprite_scale = sprite.scale
+	spell_range_indicator.set_radius(spell_effect_radius)
+	spell_range_indicator.hide()
 
 
 func _physics_process(_delta: float) -> void:
@@ -87,6 +92,8 @@ func _update_walk_squash(input_direction: Vector2, delta: float) -> void:
 func _add_spell_token(token: String) -> void:
 	_spell_tokens.append(token)
 	spell_bubble.set_tokens(_spell_tokens)
+	if show_spell_range_indicator:
+		spell_range_indicator.show()
 
 
 func _cast_spell() -> void:
@@ -94,6 +101,7 @@ func _cast_spell() -> void:
 		return
 
 	var cast_tokens: PackedStringArray = PackedStringArray(_spell_tokens)
-	spell_cast.emit(global_position, cast_tokens)
+	spell_cast.emit(global_position, cast_tokens, spell_effect_radius)
 	_spell_tokens.clear()
 	spell_bubble.hide_spell()
+	spell_range_indicator.hide()

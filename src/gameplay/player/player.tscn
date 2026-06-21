@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ctn7nc2igx1r5" path="res://src/gameplay/player/player.gd" id="1_kh5p4"]
 [ext_resource type="PackedScene" uid="uid://dljh3txvgv315" path="res://src/gameplay/player/spell_bubble.tscn" id="2_4tdni"]
 [ext_resource type="Texture2D" uid="uid://xhi473g77vhv" path="res://assets/art/duck-wizard.png" id="2_64h4j"]
+[ext_resource type="Script" uid="uid://1t4b1nod2u7o" path="res://src/gameplay/player/spell_range_indicator.gd" id="2_xsvso"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f0nsw"]
 size = Vector2(36, 28)
@@ -11,10 +12,18 @@ size = Vector2(36, 28)
 script = ExtResource("1_kh5p4")
 walk_squash_speed = 8.0
 walk_squash_amount = 0.05
+spell_effect_radius = 160.0
+show_spell_range_indicator = true
+
+[node name="SpellRangeIndicator" type="Node2D" parent="." unique_id=1419738225]
+unique_name_in_owner = true
+z_index = 10
+script = ExtResource("2_xsvso")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1015948085]
 unique_name_in_owner = true
 texture_filter = 1
+z_index = 11
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("2_64h4j")
 
