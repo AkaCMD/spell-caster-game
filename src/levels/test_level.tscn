@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bvdioybxni18t"]
+
+[ext_resource type="Script" uid="uid://rvsnsd2gqv2o" path="res://src/levels/LevelObjects/player_spawn.gd" id="1_1ky7t"]
+
+[node name="Level" type="Node2D" unique_id=190420953]
+
+[node name="Background" type="Node2D" parent="." unique_id=880187739]
+
+[node name="Tilemaps" type="Node2D" parent="." unique_id=908833387]
+
+[node name="Entities" type="Node2D" parent="." unique_id=412373785]
+
+[node name="PlayerSpawn" type="Marker2D" parent="Entities" unique_id=1910223011]
+unique_name_in_owner = true
+script = ExtResource("1_1ky7t")
+
+[node name="PlayerCamera" type="Camera2D" parent="Entities" unique_id=1593945646]
+unique_name_in_owner = true
+
+[node name="Environment" type="Node2D" parent="." unique_id=840513117]
