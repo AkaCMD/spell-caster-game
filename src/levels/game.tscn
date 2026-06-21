@@ -1,12 +1,24 @@
 [gd_scene format=3 uid="uid://ddr07twh7m3bm"]
 
 [ext_resource type="Script" uid="uid://cm4idef5v2kji" path="res://src/core/game.gd" id="1_vv6oh"]
+[ext_resource type="Script" uid="uid://banedc2w3cbh8" path="res://src/core/audio_manager.gd" id="2_6u4td"]
+[ext_resource type="AudioStream" uid="uid://ig3g4jy7qd2r" path="res://assets/audio/bgm.wav" id="3_7dmts"]
 
 [node name="MainGame" type="Node" unique_id=137866815]
 process_mode = 3
 script = ExtResource("1_vv6oh")
 
 [node name="Systems" type="Node" parent="." unique_id=543397929]
+
+[node name="AudioManager" type="Node" parent="Systems" unique_id=1282440020]
+unique_name_in_owner = true
+script = ExtResource("2_6u4td")
+bgm_volume_db = 0.0
+
+[node name="BgmPlayer" type="AudioStreamPlayer" parent="Systems/AudioManager" unique_id=911608184]
+unique_name_in_owner = true
+stream = ExtResource("3_7dmts")
+autoplay = true
 
 [node name="World" type="Node2D" parent="." unique_id=1638893030]
 process_mode = 1

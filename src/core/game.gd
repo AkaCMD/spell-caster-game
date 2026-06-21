@@ -16,6 +16,7 @@ var _current_level : BaseLevel
 @onready var level_root: Node2D = %LevelRoot
 @onready var entity_root: Node2D = %EntityRoot
 @onready var effect_root: Node2D = %EffectRoot
+@onready var audio_manager: AudioManager = %AudioManager
 
 # UI root nodes
 @onready var hud_root: Control = %HudRoot
@@ -80,6 +81,8 @@ func _init_player() -> void:
 
 func _on_player_spell_cast(origin: Vector2, tokens: PackedStringArray) -> void:
 	if _notify_spell_doors(origin, tokens):
+		audio_manager.play_spell_succeed()
+		audio_manager.play_open_door(0.5)
 		_spawn_spell_cast_ripple(origin)
 
 
