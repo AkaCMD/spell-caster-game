@@ -1,12 +1,20 @@
 [gd_scene format=3 uid="uid://c82b1y5bnhj85"]
 
 [ext_resource type="Script" uid="uid://ctn7nc2igx1r5" path="res://src/gameplay/player/player.gd" id="1_kh5p4"]
+[ext_resource type="PackedScene" uid="uid://dljh3txvgv315" path="res://src/gameplay/player/spell_bubble.tscn" id="2_4tdni"]
 [ext_resource type="Texture2D" uid="uid://xhi473g77vhv" path="res://assets/art/textures/duck-wizard.png" id="2_64h4j"]
 
 [node name="Player" type="CharacterBody2D" unique_id=1227297770]
 script = ExtResource("1_kh5p4")
+walk_squash_speed = 8.0
+walk_squash_amount = 0.05
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1015948085]
 unique_name_in_owner = true
 texture_filter = 1
+scale = Vector2(1.2, 1.2)
 texture = ExtResource("2_64h4j")
+
+[node name="SpellBubble" parent="." unique_id=1985849403 instance=ExtResource("2_4tdni")]
+unique_name_in_owner = true
+position = Vector2(0, -54)

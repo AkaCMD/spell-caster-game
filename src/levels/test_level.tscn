@@ -3,10 +3,21 @@
 [ext_resource type="Script" uid="uid://rvsnsd2gqv2o" path="res://src/levels/LevelObjects/player_spawn.gd" id="1_1ky7t"]
 [ext_resource type="Script" uid="uid://4dvff2hvlixt" path="res://src/levels/test_level.gd" id="1_jwa64"]
 
+[sub_resource type="Gradient" id="Gradient_6o3kl"]
+colors = PackedColorArray(0.77083945, 0.7708395, 0.7708391, 1, 0.77254903, 0.77254903, 0.77254903, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_45v6v"]
+gradient = SubResource("Gradient_6o3kl")
+
 [node name="Level" type="Node2D" unique_id=190420953]
 script = ExtResource("1_jwa64")
 
 [node name="Background" type="Node2D" parent="." unique_id=880187739]
+
+[node name="Sprite2D" type="Sprite2D" parent="Background" unique_id=204192655]
+position = Vector2(-1.9073486e-06, 9.536743e-07)
+scale = Vector2(23.718752, 13.28125)
+texture = SubResource("GradientTexture2D_45v6v")
 
 [node name="Tilemaps" type="Node2D" parent="." unique_id=908833387]
 

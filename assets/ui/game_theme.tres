@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://bqix7e4vfkl2h"]
+
+[ext_resource type="FontFile" uid="uid://t2itra6kjj2c" path="res://assets/font/pirkkala.ttf" id="1_n3a2k"]
+
+[resource]
+default_font = ExtResource("1_n3a2k")
+default_font_size = 24

@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://dljh3txvgv315"]
+
+[ext_resource type="Script" uid="uid://cc77ggifqtvjh" path="res://src/gameplay/player/spell_bubble.gd" id="1_hlaak"]
+[ext_resource type="Theme" uid="uid://bqix7e4vfkl2h" path="res://assets/ui/game_theme.tres" id="2_digl3"]
+
+[node name="SpellBubble" type="Node2D" unique_id=1114395389]
+script = ExtResource("1_hlaak")
+
+[node name="BubbleRoot" type="Control" parent="." unique_id=1300966681]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -26.0
+offset_top = -28.0
+offset_right = 26.0
+
+[node name="FrameRoot" type="Control" parent="BubbleRoot" unique_id=1486921384]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_right = 52.0
+offset_bottom = 28.0
+
+[node name="BubbleFill" type="ColorRect" parent="BubbleRoot/FrameRoot" unique_id=1623987199]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 52.0
+offset_bottom = 28.0
+color = Color(1, 1, 1, 0.92)
+
+[node name="BubbleFrame" type="NinePatchRect" parent="BubbleRoot/FrameRoot" unique_id=1721037343]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 0
+offset_right = 52.0
+offset_bottom = 28.0
+
+[node name="NameLabel" type="Label" parent="BubbleRoot/FrameRoot" unique_id=13452271]
+layout_mode = 0
+offset_top = -23.0
+offset_right = 71.0
+offset_bottom = 1.0
+theme = ExtResource("2_digl3")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.21950102, 0.21950102, 0.21950102, 1)
+theme_override_constants/outline_size = 10
+text = "wizard"
+vertical_alignment = 2
+
+[node name="SpellLabel" type="Label" parent="BubbleRoot" unique_id=1592027668]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 10.0
+offset_top = 6.0
+offset_right = 42.0
+offset_bottom = 29.0
+horizontal_alignment = 1
+vertical_alignment = 1
