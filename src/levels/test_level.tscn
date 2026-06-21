@@ -1,15 +1,56 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvdioybxni18t"]
+[gd_scene format=4 uid="uid://bvdioybxni18t"]
 
 [ext_resource type="Script" uid="uid://rvsnsd2gqv2o" path="res://src/levels/LevelObjects/player_spawn.gd" id="1_1ky7t"]
 [ext_resource type="Script" uid="uid://4dvff2hvlixt" path="res://src/levels/test_level.gd" id="1_jwa64"]
-[ext_resource type="PackedScene" path="res://src/gameplay/entities/door/door.tscn" id="3_0h30t"]
-[ext_resource type="Script" path="res://src/levels/LevelObjects/grid_ground.gd" id="3_2ey6t"]
+[ext_resource type="PackedScene" uid="uid://dryfuprxc26aw" path="res://src/gameplay/entities/door/door.tscn" id="3_0h30t"]
+[ext_resource type="Script" uid="uid://efqxv54110lr" path="res://src/levels/LevelObjects/grid_ground.gd" id="3_2ey6t"]
+[ext_resource type="Texture2D" uid="uid://dx7epxsi1ypx6" path="res://assets/art/textures/walls.png" id="3_7hvae"]
 
 [sub_resource type="Gradient" id="Gradient_6o3kl"]
 colors = PackedColorArray(0.77083945, 0.7708395, 0.7708391, 1, 0.77254903, 0.77254903, 0.77254903, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_45v6v"]
 gradient = SubResource("Gradient_6o3kl")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7hvae"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t1chq"]
+texture = ExtResource("3_7hvae")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+3:0/0 = 0
+4:0/0 = 0
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+3:1/0 = 0
+4:1/0 = 0
+0:2/0 = 0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+2:2/0 = 0
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+3:2/0 = 0
+4:2/0 = 0
+0:3/0 = 0
+0:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+1:3/0 = 0
+1:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+2:3/0 = 0
+2:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-64, 64, 64, 64, 64, -64, -64, -64)
+
+[sub_resource type="TileSet" id="TileSet_br53r"]
+tile_size = Vector2i(128, 128)
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_7hvae")
+sources/0 = SubResource("TileSetAtlasSource_t1chq")
 
 [node name="Level" type="Node2D" unique_id=190420953]
 script = ExtResource("1_jwa64")
@@ -23,9 +64,15 @@ texture = SubResource("GradientTexture2D_45v6v")
 
 [node name="Tilemaps" type="Node2D" parent="." unique_id=908833387]
 
+[node name="WallLayer" type="TileMapLayer" parent="Tilemaps" unique_id=1454747335]
+scale = Vector2(0.5, 0.5)
+tile_map_data = PackedByteArray("AAD8/wMAAAAAAAMAAAD9/wMAAAABAAMAAAD+/wMAAAABAAMAAAD//wMAAAABAAMAAAAAAAMAAAABAAMAAAABAAMAAAABAAMAAAACAAMAAAABAAMAAAADAAMAAAACAAMAAAD8/wIAAAAAAAIAAAD8/wEAAAAAAAIAAAD8/wAAAAAAAAIAAAD8////AAAAAAIAAAD8//7/AAAAAAIAAAD8//3/AAAAAAIAAAD8//z/AAAAAAAAAAD9//z/AAABAAAAAAD+//z/AAADAAAAAAABAPz/AAAEAAAAAAACAPz/AAABAAAAAAADAPz/AAACAAAAAAADAP3/AAACAAEAAAADAP7/AAACAAEAAAADAP//AAACAAEAAAADAAAAAAACAAEAAAADAAEAAAACAAEAAAADAAIAAAACAAEAAAD9//3/AAABAAEAAAD+//3/AAABAAEAAAABAP3/AAABAAEAAAACAP3/AAABAAEAAAA=")
+tile_set = SubResource("TileSet_br53r")
+
 [node name="GridGround" type="Node2D" parent="Tilemaps" unique_id=1212355698]
+visible = false
 script = ExtResource("3_2ey6t")
-fill_color = Color(0.84630173, 0.8709292, 0.82295597, 1)
+fill_color = Color(0.84705883, 0.87058824, 0.8235294, 0)
 grid_color = Color(1, 1, 1, 1)
 
 [node name="Entities" type="Node2D" parent="." unique_id=412373785]
@@ -37,7 +84,7 @@ script = ExtResource("1_1ky7t")
 [node name="PlayerCamera" type="Camera2D" parent="Entities" unique_id=1593945646]
 unique_name_in_owner = true
 
-[node name="Door" parent="Entities" instance=ExtResource("3_0h30t")]
-position = Vector2(256, 0)
+[node name="Door" parent="Entities" unique_id=220099315 instance=ExtResource("3_0h30t")]
+position = Vector2(0, -192)
 
 [node name="Environment" type="Node2D" parent="." unique_id=840513117]

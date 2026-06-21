@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="My Godot Template"
+config/name="Duck Wizard"
 run/main_scene="uid://ddr07twh7m3bm"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
