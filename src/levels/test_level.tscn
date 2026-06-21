@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://bvdioybxni18t"]
 
 [ext_resource type="Script" uid="uid://rvsnsd2gqv2o" path="res://src/levels/LevelObjects/player_spawn.gd" id="1_1ky7t"]
+[ext_resource type="Script" uid="uid://4dvff2hvlixt" path="res://src/levels/test_level.gd" id="1_jwa64"]
 
 [node name="Level" type="Node2D" unique_id=190420953]
+script = ExtResource("1_jwa64")
 
 [node name="Background" type="Node2D" parent="." unique_id=880187739]
 

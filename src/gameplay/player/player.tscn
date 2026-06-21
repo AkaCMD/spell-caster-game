@@ -3,9 +3,10 @@
 [ext_resource type="Script" uid="uid://ctn7nc2igx1r5" path="res://src/gameplay/player/player.gd" id="1_kh5p4"]
 [ext_resource type="Texture2D" uid="uid://xhi473g77vhv" path="res://assets/art/textures/duck-wizard.png" id="2_64h4j"]
 
-[node name="Player" type="Node" unique_id=1227297770]
+[node name="Player" type="CharacterBody2D" unique_id=1227297770]
 script = ExtResource("1_kh5p4")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1015948085]
+unique_name_in_owner = true
 texture_filter = 1
 texture = ExtResource("2_64h4j")

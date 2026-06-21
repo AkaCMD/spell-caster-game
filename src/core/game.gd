@@ -86,9 +86,9 @@ func _place_player_at_level_spawn() -> void:
 		push_error("Cannot place player into level because level is null")
 		return
 		
-	player.global_position = _current_level.get_player_camera()
+	player.global_position = _current_level.get_default_player_spawn()
 	
-## Attaches player to the current
+## Positions the level camera for prototype gameplay.
 func _setup_level_camera() -> void:
 	if player == null or _current_level == null:
 		return
@@ -96,10 +96,10 @@ func _setup_level_camera() -> void:
 	var level_camera : Camera2D = _current_level.get_player_camera()
 	if level_camera == null:
 		return
-	
-	# FUTURE (camera): Temporary hookup
-	# Will become: camera_system.set_target(player)
-	level_camera.target = player
+
+	level_camera.global_position = player.global_position
+	level_camera.enabled = true
+	level_camera.make_current()
 
 
 func _init_systems() -> void:
