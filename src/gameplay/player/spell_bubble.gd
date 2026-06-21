@@ -3,7 +3,6 @@ extends Node2D
 
 @export var padding : Vector2 = Vector2(10.0, 6.0)
 @export var min_size : Vector2 = Vector2(52.0, 28.0)
-@export var text_color : Color = Color(0.18, 0.12, 0.28, 1.0)
 @export var bubble_squash_amount : float = 1.0
 @export var text_squash_amount : float = 1.0
 @export var show_bounce_duration : float = 0.24
@@ -14,7 +13,6 @@ extends Node2D
 
 @onready var bubble_root : Control = %BubbleRoot
 @onready var frame_root : Control = %FrameRoot
-@onready var bubble_fill : ColorRect = %BubbleFill
 @onready var bubble_frame : NinePatchRect = %BubbleFrame
 @onready var label : Label = %SpellLabel
 
@@ -26,7 +24,6 @@ var _show_tween : Tween
 
 
 func _ready() -> void:
-	label.add_theme_color_override("font_color", text_color)
 	hide_spell()
 
 
@@ -66,7 +63,6 @@ func _update_layout() -> void:
 	bubble_root.size = _bubble_size
 	bubble_root.pivot_offset = _bubble_size * 0.5
 	frame_root.size = _bubble_size
-	bubble_fill.size = _bubble_size
 	bubble_frame.size = _bubble_size
 	_apply_squash()
 

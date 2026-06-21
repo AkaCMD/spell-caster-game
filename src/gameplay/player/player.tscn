@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ctn7nc2igx1r5" path="res://src/gameplay/player/player.gd" id="1_kh5p4"]
 [ext_resource type="PackedScene" uid="uid://dljh3txvgv315" path="res://src/gameplay/player/spell_bubble.tscn" id="2_4tdni"]
-[ext_resource type="Texture2D" uid="uid://xhi473g77vhv" path="res://assets/art/textures/duck-wizard.png" id="2_64h4j"]
+[ext_resource type="Texture2D" uid="uid://xhi473g77vhv" path="res://assets/art/duck-wizard.png" id="2_64h4j"]
 
 [node name="Player" type="CharacterBody2D" unique_id=1227297770]
 script = ExtResource("1_kh5p4")

@@ -2,9 +2,13 @@
 
 [ext_resource type="Script" uid="uid://cc77ggifqtvjh" path="res://src/gameplay/player/spell_bubble.gd" id="1_hlaak"]
 [ext_resource type="Theme" uid="uid://bqix7e4vfkl2h" path="res://assets/ui/game_theme.tres" id="2_digl3"]
+[ext_resource type="Texture2D" uid="uid://blqmyvwhx7k2f" path="res://assets/ui/bubble.png" id="2_rt7oy"]
 
 [node name="SpellBubble" type="Node2D" unique_id=1114395389]
 script = ExtResource("1_hlaak")
+min_size = Vector2(64, 45)
+bubble_squash_amount = 0.6
+text_squash_amount = 0.0
 
 [node name="BubbleRoot" type="Control" parent="." unique_id=1300966681]
 unique_name_in_owner = true
@@ -16,25 +20,30 @@ offset_right = 26.0
 
 [node name="FrameRoot" type="Control" parent="BubbleRoot" unique_id=1486921384]
 unique_name_in_owner = true
-anchors_preset = 0
-offset_right = 52.0
-offset_bottom = 28.0
-
-[node name="BubbleFill" type="ColorRect" parent="BubbleRoot/FrameRoot" unique_id=1623987199]
-unique_name_in_owner = true
-layout_mode = 0
-offset_right = 52.0
-offset_bottom = 28.0
-color = Color(1, 1, 1, 0.92)
+layout_mode = 1
+anchor_top = -0.5
+anchor_bottom = -0.5
+offset_right = 100.0
+offset_bottom = 42.0
 
 [node name="BubbleFrame" type="NinePatchRect" parent="BubbleRoot/FrameRoot" unique_id=1721037343]
 unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.6431373)
 texture_filter = 1
 layout_mode = 0
-offset_right = 52.0
-offset_bottom = 28.0
+offset_right = 74.0
+offset_bottom = 42.0
+texture = ExtResource("2_rt7oy")
+region_rect = Rect2(0, 0, 64, 64)
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [node name="NameLabel" type="Label" parent="BubbleRoot/FrameRoot" unique_id=13452271]
+self_modulate = Color(1, 1, 1, 0.78431374)
 layout_mode = 0
 offset_top = -23.0
 offset_right = 71.0
@@ -48,10 +57,18 @@ vertical_alignment = 2
 
 [node name="SpellLabel" type="Label" parent="BubbleRoot" unique_id=1592027668]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 10.0
-offset_top = 6.0
-offset_right = 42.0
-offset_bottom = 29.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.25
+anchor_top = -0.143
+anchor_right = 0.25
+anchor_bottom = -0.143
+offset_top = 0.004000187
+offset_right = 32.0
+offset_bottom = 24.004
+theme = ExtResource("2_digl3")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.21960784, 0.21960784, 0.21960784, 1)
+theme_override_constants/outline_size = 10
 horizontal_alignment = 1
 vertical_alignment = 1
