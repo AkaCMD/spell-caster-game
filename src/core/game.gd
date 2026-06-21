@@ -75,7 +75,12 @@ func _init_player() -> void:
 		return
 		
 	entity_root.add_child(player)
-	player.spell_cast.connect(_spawn_spell_cast_ripple)
+	player.spell_cast.connect(_on_player_spell_cast)
+
+
+func _on_player_spell_cast(origin: Vector2, tokens: PackedStringArray) -> void:
+	if _notify_spell_doors(origin, tokens):
+		_spawn_spell_cast_ripple(origin)
 
 
 func _spawn_spell_cast_ripple(origin: Vector2) -> void:
@@ -86,6 +91,19 @@ func _spawn_spell_cast_ripple(origin: Vector2) -> void:
 
 	effect_root.add_child(ripple)
 	ripple.play(origin)
+
+
+func _notify_spell_doors(origin: Vector2, tokens: PackedStringArray) -> bool:
+	var spell_had_effect: bool = false
+
+	for node: Node in get_tree().get_nodes_in_group("spell_doors"):
+		var door: Door = node as Door
+		if door == null:
+			continue
+		if door.try_open(origin, tokens):
+			spell_had_effect = true
+
+	return spell_had_effect
 
 
 ## Finds the default spawn location in currently loaded level, and places

@@ -42,6 +42,25 @@ patch_margin_bottom = 16
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
+[node name="HintLabel" type="Label" parent="BubbleRoot/FrameRoot/BubbleFrame" unique_id=725481830]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.878
+anchor_top = 0.762
+anchor_right = 0.878
+anchor_bottom = 0.762
+offset_left = 0.027999878
+offset_top = -0.0040016174
+offset_right = 45.028
+offset_bottom = 23.995998
+theme = ExtResource("2_digl3")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.21950102, 0.21950102, 0.21950102, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 20
+text = "*cast"
+vertical_alignment = 2
+
 [node name="NameLabel" type="Label" parent="BubbleRoot/FrameRoot" unique_id=13452271]
 self_modulate = Color(1, 1, 1, 0.78431374)
 layout_mode = 0

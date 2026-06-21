@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dryfuprxc26aw"]
+
+[ext_resource type="Script" uid="uid://dr3m8xu8tlywr" path="res://src/gameplay/entities/door/door.gd" id="1_t8b47"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4htvc"]
+size = Vector2(128, 64)
+
+[node name="Door" type="Node2D" unique_id=1475919128]
+script = ExtResource("1_t8b47")
+required_spell_tokens = PackedStringArray("<", ">", ">")
+
+[node name="Visual" type="Polygon2D" parent="." unique_id=257724089]
+unique_name_in_owner = true
+polygon = PackedVector2Array(-64, -64, 64, -64, 64, 64, -64, 64)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1041338914]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1625561816]
+unique_name_in_owner = true
+position = Vector2(0, 32)
+shape = SubResource("RectangleShape2D_4htvc")
