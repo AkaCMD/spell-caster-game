@@ -1,0 +1,46 @@
+# Godot editor/cache files
+.godot/
+
+# Godot generated import artifacts
+.import/
+*.translation
+
+# Exported games and build output
+/android/
+/build/
+/builds/
+/dist/
+/export/
+/exports/
+*.apk
+*.aab
+*.ipa
+*.exe
+*.app
+*.x86_64
+*.arm64
+*.pck
+*.zip
+
+# Export credentials and local secrets
+export_presets.cfg
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+*.env
+
+# Mono/C# generated files, if the template is extended later
+.mono/
+data_*/
+mono_crash.*.json
+
+# Editor, IDE, and OS noise
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
