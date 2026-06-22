@@ -9,6 +9,7 @@
 size = Vector2(36, 28)
 
 [node name="Player" type="CharacterBody2D" unique_id=1227297770]
+collision_layer = 2
 script = ExtResource("1_kh5p4")
 walk_squash_speed = 8.0
 walk_squash_amount = 0.05

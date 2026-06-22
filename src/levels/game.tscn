@@ -13,7 +13,7 @@ script = ExtResource("1_vv6oh")
 [node name="AudioManager" type="Node" parent="Systems" unique_id=1282440020]
 unique_name_in_owner = true
 script = ExtResource("2_6u4td")
-bgm_volume_db = 0.0
+bgm_volume_db = -3.0
 
 [node name="BgmPlayer" type="AudioStreamPlayer" parent="Systems/AudioManager" unique_id=911608184]
 unique_name_in_owner = true
@@ -53,6 +53,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 
 [node name="TransitionLayer" type="CanvasLayer" parent="." unique_id=412876703]
 process_mode = 3
@@ -75,3 +76,10 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="DebugTextOverlay" type="Control" parent="DebugLayer/DebugRoot" unique_id=627954189]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+mouse_behavior_recursive = 1

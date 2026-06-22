@@ -28,6 +28,9 @@ func _ready() -> void:
 	
 	load_level(TEST_LEVEL)
 	
+func quit_game() -> void:
+	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+	get_tree().quit()
 
 ## Called for loading a level scene.
 ## NOTE: The input level_scene must extend BaseLevel
