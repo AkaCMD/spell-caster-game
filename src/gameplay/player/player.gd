@@ -55,18 +55,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _get_movement_input() -> Vector2:
-	var input_direction : Vector2 = Vector2.ZERO
-
-	if Input.is_key_pressed(KEY_A):
-		input_direction.x -= 1.0
-	if Input.is_key_pressed(KEY_D):
-		input_direction.x += 1.0
-	if Input.is_key_pressed(KEY_W):
-		input_direction.y -= 1.0
-	if Input.is_key_pressed(KEY_S):
-		input_direction.y += 1.0
-
-	return input_direction.normalized()
+	return Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 
 
 func _update_facing(input_direction: Vector2) -> void:

@@ -27,7 +27,15 @@ func _ready() -> void:
 	_init_player()
 	
 	load_level(TEST_LEVEL)
+
+func _input(event: InputEvent) -> void:
+	if not OS.is_debug_build():
+		return
 	
+	if event.is_action_pressed(&"debug_quit"):
+		quit_game()
+
+
 func quit_game() -> void:
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 	get_tree().quit()
