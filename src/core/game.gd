@@ -7,10 +7,15 @@ extends Node
 const TEST_LEVEL : String = "uid://bvdioybxni18t"
 const PLAYER_SCENE_UID : String = "uid://c82b1y5bnhj85"
 const SPELL_CAST_RIPPLE_SCENE : PackedScene = preload("res://src/gameplay/effects/spell_cast_ripple/spell_cast_ripple.tscn")
+const ROOM_CAMERA_MOVE_DURATION: float = 0.28
+const OVERVIEW_CAMERA_MOVE_DURATION: float = 0.18
 
 var player : Player = null
 
 var _current_level : BaseLevel
+var _current_room_index: int = 0
+var _is_room_overview_active: bool = false
+var _camera_tween: Tween = null
 
 # Game World root nodes
 @onready var level_root: Node2D = %LevelRoot
@@ -28,7 +33,18 @@ func _ready() -> void:
 	
 	load_level(TEST_LEVEL)
 
+
+func _physics_process(_delta: float) -> void:
+	_update_current_room_camera()
+
+
 func _input(event: InputEvent) -> void:
+	var key_event: InputEventKey = event as InputEventKey
+	if key_event != null and not key_event.echo and key_event.keycode == KEY_TAB:
+		_set_room_overview_active(key_event.pressed)
+		get_viewport().set_input_as_handled()
+		return
+
 	if not OS.is_debug_build():
 		return
 	
@@ -71,6 +87,8 @@ func _defered_load_level(level_scene_uid : String) -> void:
 	# Allow level to fully process before accessing it
 	await get_tree().process_frame
 	_place_player_at_level_spawn()
+	_current_room_index = _current_level.get_room_index_at_position(player.global_position)
+	_is_room_overview_active = false
 	_setup_level_camera()
 
 
@@ -141,9 +159,58 @@ func _setup_level_camera() -> void:
 	if level_camera == null:
 		return
 
-	level_camera.global_position = player.global_position
+	level_camera.global_position = _current_level.get_room_camera_position(_current_room_index)
+	level_camera.zoom = Vector2.ONE
 	level_camera.enabled = true
 	level_camera.make_current()
+
+
+func _update_current_room_camera() -> void:
+	if player == null or _current_level == null:
+		return
+
+	var room_index: int = _current_level.get_room_index_at_position(player.global_position)
+	if room_index == _current_room_index:
+		return
+
+	_current_room_index = room_index
+	if not _is_room_overview_active:
+		_move_camera_to(_current_level.get_room_camera_position(_current_room_index), Vector2.ONE, ROOM_CAMERA_MOVE_DURATION)
+
+
+func _set_room_overview_active(is_active: bool) -> void:
+	if _current_level == null:
+		return
+	if is_active == _is_room_overview_active:
+		return
+
+	_is_room_overview_active = is_active
+	if _is_room_overview_active:
+		_move_camera_to(
+			_current_level.get_overview_camera_position(),
+			_current_level.get_overview_camera_zoom(),
+			OVERVIEW_CAMERA_MOVE_DURATION
+		)
+	else:
+		_move_camera_to(
+			_current_level.get_room_camera_position(_current_room_index),
+			Vector2.ONE,
+			ROOM_CAMERA_MOVE_DURATION
+		)
+
+
+func _move_camera_to(target_position: Vector2, target_zoom: Vector2, duration: float) -> void:
+	var level_camera: Camera2D = _current_level.get_player_camera()
+	if level_camera == null:
+		return
+
+	if _camera_tween != null:
+		_camera_tween.kill()
+
+	_camera_tween = create_tween()
+	_camera_tween.set_parallel(true)
+	_camera_tween.tween_property(level_camera, "global_position", target_position, duration)
+	_camera_tween.tween_property(level_camera, "zoom", target_zoom, duration)
 
 
 func _init_systems() -> void:
