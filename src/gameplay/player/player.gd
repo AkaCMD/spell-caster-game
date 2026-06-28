@@ -4,6 +4,7 @@ extends CharacterBody2D
 signal spell_cast(origin: Vector2, tokens: PackedStringArray, effect_radius: float)
 
 @export var move_speed : float = 160.0
+@export var sprint_speed_multiplier: float = 1.6
 @export var walk_squash_speed : float = 10.0
 @export var walk_squash_amount : float = 0.08
 @export var spell_effect_radius: float = 160.0
@@ -26,9 +27,10 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	var input_direction : Vector2 = _get_movement_input()
+	var speed_multiplier: float = sprint_speed_multiplier if Input.is_action_pressed(&"sprint") else 1.0
 	_update_facing(input_direction)
 	_update_walk_squash(input_direction, _delta)
-	velocity = input_direction * move_speed
+	velocity = input_direction * move_speed * speed_multiplier
 	move_and_slide()
 
 
