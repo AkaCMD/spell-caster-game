@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://xhi473g77vhv" path="res://assets/art/textures/duck-wizard.png" id="2_64h4j"]
 [ext_resource type="Script" uid="uid://1t4b1nod2u7o" path="res://src/gameplay/player/spell_range_indicator.gd" id="2_xsvso"]
 
+[ext_resource type="Script" path="res://src/gameplay/player/grid_walker.gd" id="5_walker"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f0nsw"]
 size = Vector2(36, 28)
 
@@ -33,3 +35,7 @@ position = Vector2(-9, -54)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=127321368]
 position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_f0nsw")
+
+[node name="GridWalker" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_walker")

@@ -7,6 +7,7 @@ extends Node2D
 		_update_rect()
 
 @export var duration: float = 0.55
+@export var dissipation_color: Color = Color(0.6, 0.65, 0.65, 0.45)
 
 @onready var ripple_rect: ColorRect = %RippleRect
 
@@ -23,9 +24,12 @@ func _ready() -> void:
 	_update_rect()
 
 
-func play(origin: Vector2) -> void:
+func play(origin: Vector2, subdued: bool = false) -> void:
 	global_position = origin
 	visible = true
+	if subdued and _material != null:
+		_material.set_shader_parameter(&"ripple_color", dissipation_color)
+		_material.set_shader_parameter(&"ring_count", 1)
 	_set_progress(0.0)
 
 	if _tween != null:

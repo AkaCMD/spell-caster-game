@@ -7,7 +7,6 @@ size = Vector2(128, 64)
 
 [node name="Door" type="Node2D" unique_id=1475919128]
 script = ExtResource("1_t8b47")
-required_spell_tokens = PackedStringArray("<", ">", ">")
 
 [node name="Visual" type="Polygon2D" parent="." unique_id=257724089]
 unique_name_in_owner = true

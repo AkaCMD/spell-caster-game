@@ -4,6 +4,10 @@ extends Node2D
 ## Abstract class for levels
 
 
+func get_grid_board() -> GridBoard:
+	return null
+
+
 ## Provides a player spawn location
 @abstract func get_default_player_spawn() -> Vector2
 

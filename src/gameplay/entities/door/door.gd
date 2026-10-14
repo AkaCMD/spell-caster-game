@@ -1,74 +1,71 @@
 class_name Door
 extends Node2D
 
-enum DoorState {
-	LOCKED,
-	ACTIVATING,
-	COMPLETE,
-}
+enum DoorState { LOCKED, ACTIVATING, COMPLETE }
 
-@export var required_spell_tokens: PackedStringArray = PackedStringArray(["^", ">", "v"])
 @export var open_duration: float = 0.35
+@export var closed_color: Color = Color(0.46, 0.52, 0.53)
+@export var active_color: Color = Color(0.75, 0.84, 0.70)
+@export var target_color: Color = Color(0.55, 0.95, 1.0)
 
 @onready var visual: Polygon2D = %Visual
 @onready var collision_shape: CollisionShape2D = %CollisionShape2D
 
 var state: DoorState = DoorState.LOCKED
+var _elapsed: float = 0.0
+var _selected: bool = false
+var _shake_remaining: float = 0.0
 
 
 func _ready() -> void:
-	add_to_group("spell_doors")
-	_apply_state_visuals()
+	reset_door()
 
 
-func try_open(cast_origin: Vector2, spell_tokens: PackedStringArray, effect_radius: float) -> bool:
+func open() -> void:
 	if state != DoorState.LOCKED:
-		return false
-	if global_position.distance_to(cast_origin) > effect_radius:
-		return false
-	if not _matches_required_spell(spell_tokens):
-		return false
-
-	_activate()
-	return true
-
-
-func _matches_required_spell(spell_tokens: PackedStringArray) -> bool:
-	if spell_tokens.size() != required_spell_tokens.size():
-		return false
-
-	for index: int in range(required_spell_tokens.size()):
-		if spell_tokens[index] != required_spell_tokens[index]:
-			return false
-
-	return true
-
-
-func _activate() -> void:
+		return
 	state = DoorState.ACTIVATING
-	_apply_state_visuals()
-
-	var tween: Tween = create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(visual, "scale", Vector2(0.12, 1.0), open_duration)
-	tween.tween_property(visual, "modulate:a", 0.35, open_duration)
-	await tween.finished
-
-	state = DoorState.COMPLETE
-	_apply_state_visuals()
+	_elapsed = 0.0
+	collision_shape.set_deferred("disabled", true)
+	visual.modulate = active_color
+	set_selected(false)
 
 
-func _apply_state_visuals() -> void:
-	match state:
-		DoorState.LOCKED:
-			visible = true
-			collision_shape.disabled = false
-			visual.scale = Vector2.ONE
-			visual.modulate = Color(0.36, 0.16, 0.08, 1.0)
-		DoorState.ACTIVATING:
-			visible = true
-			collision_shape.disabled = true
-			visual.modulate = Color(0.95, 0.63, 0.22, 1.0)
-		DoorState.COMPLETE:
+func reset_door() -> void:
+	state = DoorState.LOCKED
+	_elapsed = 0.0
+	_shake_remaining = 0.0
+	visible = true
+	visual.position = Vector2.ZERO
+	visual.scale = Vector2.ONE
+	visual.modulate = closed_color
+	collision_shape.set_deferred("disabled", false)
+	set_selected(false)
+
+
+func set_selected(selected: bool) -> void:
+	_selected = selected
+	queue_redraw()
+
+
+func show_blocked() -> void:
+	_shake_remaining = 0.24
+
+
+func _process(delta: float) -> void:
+	if state == DoorState.ACTIVATING:
+		_elapsed += delta
+		var progress: float = clampf(_elapsed / maxf(open_duration, 0.01), 0.0, 1.0)
+		visual.scale.x = lerpf(1.0, 0.05, progress)
+		visual.modulate.a = 1.0 - progress
+		if progress >= 1.0:
+			state = DoorState.COMPLETE
 			visible = false
-			collision_shape.disabled = true
+	if _shake_remaining > 0.0:
+		_shake_remaining = maxf(0.0, _shake_remaining - delta)
+		visual.position.x = sin(_shake_remaining * 90.0) * 7.0 if _shake_remaining > 0.0 else 0.0
+
+
+func _draw() -> void:
+	if _selected:
+		draw_rect(Rect2(Vector2(-70, -70), Vector2(140, 140)), target_color, false, 5.0)

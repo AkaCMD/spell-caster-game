@@ -10,6 +10,8 @@ extends Node2D
 @export var show_bounce_overshoot_scale : Vector2 = Vector2(1.12, 1.12)
 @export var show_bounce_rebound_scale : Vector2 = Vector2(0.96, 0.96)
 @export var show_rebound_duration : float = 0.08
+@export var visible_instruction_count: int = 8
+@export var instructions_per_line: int = 4
 
 @onready var bubble_root : Control = %BubbleRoot
 @onready var frame_root : Control = %FrameRoot
@@ -34,7 +36,19 @@ func set_tokens(tokens: PackedStringArray) -> void:
 
 	var should_bounce : bool = not visible
 	visible = true
-	label.text = " ".join(tokens)
+	# Display a bounded tail, without limiting the actual spell program.
+	var start: int = maxi(0, tokens.size() - maxi(1, visible_instruction_count) * 2)
+	start -= start % 2
+	var text: String = "... (%d tokens)\n" % tokens.size() if start > 0 else ""
+	var group_count: int = 0
+	for index: int in range(start, tokens.size(), 2):
+		if group_count > 0:
+			text += "\n" if group_count % maxi(1, instructions_per_line) == 0 else "  |  "
+		text += tokens[index]
+		if index + 1 < tokens.size():
+			text += " " + tokens[index + 1]
+		group_count += 1
+	label.text = text
 	_update_layout()
 	if should_bounce:
 		_play_show_bounce()
