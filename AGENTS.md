@@ -43,3 +43,17 @@
 - Use Conventional Commits when asked to create or suggest a commit message: `type(scope): summary`.
 - Prefer concise scopes already used in this repo, such as `level`, `player`, `ui`, `effects`, `scene`, `input`, `config`, or `docs`.
 - Before committing, inspect status, staged diff, and recent commits. Stage only intended files; this repo often has small unrelated scene edits in the worktree.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live in GitHub Issues for AkaCMD/spell-caster-game. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Use the five default triage labels. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Use a single-context layout: root `CONTEXT.md` and `docs/adr/`. See `docs/agents/domain.md`.
