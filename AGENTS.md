@@ -1,59 +1,43 @@
 # Project Instructions
 
-## Project Summary
-
-- This is a Godot 4.7 2D spell-caster prototype. The player moves with WASD, enters spell tokens with arrow keys, and casts with Enter.
-- Main scene is `src/levels/game.tscn` via `project.godot`; `src/core/game.gd` is the runtime coordinator.
-- `Game` owns world layers: `%LevelRoot`, `%EntityRoot`, `%EffectRoot`; runtime gameplay effects should be spawned into `%EffectRoot`, not attached to the player.
-- Prototype level is `src/levels/test_level.tscn`; level scripts must extend `BaseLevel` and provide `get_default_player_spawn()` and `get_player_camera()`.
-
 ## Verification
 
-- Prefer the Godot project tools for launch checks. A useful smoke test is running `res://src/levels/game.tscn` and checking debug output for errors.
-- There is no repo-local CI, package manifest, lockfile, or scripted test/lint command currently checked in.
-- `godot` may not be available on the shell `PATH`; do not assume shell Godot commands work unless you verify them first.
-- Use `git diff --check` before commits to catch whitespace errors.
+- After gameplay or scene changes, smoke-test the main scene configured in `project.godot` and check debug output for errors. Prefer Godot project tools; verify the editor binary's location before using shell commands.
+- For movement, spell, reset, or puzzle logic changes, follow `tests/README.md` and require zero failed checks.
+- Before committing, run `git diff --check`.
 
 ## Editing Godot Files
 
-- Use UTF-8 and LF for all text files.
-- Do not edit files under `.godot/` unless explicitly requested; they are local editor/cache files.
-- Prefer editor-safe changes for `.tscn`, `.tres`, `.import`, and UID-backed resources. Avoid hand-editing generated/cache files when a Godot tool can do it safely.
-- Keep `.gd.uid` and `.gdshader.uid` files with their scripts/shaders when Godot creates them.
-- New gameplay effects belong under `src/gameplay/effects/<effect_name>/`; player-specific UI/behavior belongs under `src/gameplay/player/`.
+- Use UTF-8 and LF for text files.
+- Leave `.godot/` editor/cache files untouched unless explicitly requested.
+- Prefer editor-safe changes for scenes and resources. Keep generated `.gd.uid` and `.gdshader.uid` files with their scripts/shaders.
+- Put new gameplay effects under `src/gameplay/effects/<effect_name>/` and player-specific UI/behavior under `src/gameplay/player/`.
 
 ## GDScript Conventions
 
-- Always use static typing for variables, parameters, returns, casts, and `@onready` references where Godot allows it.
-- Prefer flat, modular, event-driven, component-based scripts over deep inheritance or large mixed-responsibility scripts.
-- Use `%UniqueNodeName` for important local scene references and `@export` for editor-assigned dependencies; avoid parent-chain lookups like `get_parent().get_parent()`.
-- Use groups for broad queries/tags and signals for gameplay events. Signal names should describe what happened, not what receivers should do.
-- If a stored node reference is used after `await`, check `is_instance_valid(node)` first.
-- Do not run long blocking work inside `_process`, `_physics_process`, `_input`, or signal callbacks; split long work across frames with `await get_tree().process_frame` when needed.
+- Use static typing for variables, parameters, returns, casts, and `@onready` references where Godot allows it.
+- Prefer flat, modular, event-driven components over deep inheritance or mixed-responsibility scripts.
+- Use `%UniqueNodeName` for important local scene references and `@export` for editor-assigned dependencies; avoid parent-chain lookups.
+- Use groups for broad queries/tags and signals for gameplay events. Name signals after what happened.
+- Check `is_instance_valid(node)` before using a stored node reference after `await`.
+- Split long work across frames so processing, input, and signal callbacks remain responsive.
 
-## Current Gameplay Wiring
+## Gameplay Conventions
 
-- `src/gameplay/player/player.gd` owns movement, sprite facing/squash, spell token input, and emits `spell_cast(origin)` after a non-empty cast.
-- `src/gameplay/player/spell_bubble.tscn` is an independent UI scene for the player's spell tokens. Keep visual tuning editor-driven; do not hard-code token color or frame opacity in script unless explicitly requested.
-- `src/gameplay/effects/spell_cast_ripple/spell_cast_ripple.tscn` is a runtime effect scene. `Game` instances it and calls `play(origin)` when `Player.spell_cast` fires.
-- Spell tokens currently use ASCII `^`, `v`, `<`, `>` to avoid font glyph issues.
+- Logical grid cells are the source of truth; interpolated node positions are visual state. Use the board's cell/world conversion methods at the boundary.
+- Keep walking animation acceleration independent of spell animation timing.
+- Spawn runtime gameplay effects in `Game`'s `%EffectRoot`.
+- Keep spell-bubble visuals editor-driven unless explicitly requested otherwise.
+- Use ASCII `^`, `v`, `<`, `>` for spell tokens with the current font to avoid missing glyphs.
 
 ## Commits
 
-- Use Conventional Commits when asked to create or suggest a commit message: `type(scope): summary`.
-- Prefer concise scopes already used in this repo, such as `level`, `player`, `ui`, `effects`, `scene`, `input`, `config`, or `docs`.
-- Before committing, inspect status, staged diff, and recent commits. Stage only intended files; this repo often has small unrelated scene edits in the worktree.
+- Use Conventional Commits: `type(scope): summary`.
+- Inspect status, staged diff, and recent commits; stage only intended files. This repo often has unrelated scene edits in the worktree.
 
-## Agent skills
+## Project Docs
 
-### Issue tracker
-
-Issues and specs live in GitHub Issues for AkaCMD/spell-caster-game. See `docs/agents/issue-tracker.md`.
-
-### Triage labels
-
-Use the five default triage labels. See `docs/agents/triage-labels.md`.
-
-### Domain docs
-
-Use a single-context layout: root `CONTEXT.md` and `docs/adr/`. See `docs/agents/domain.md`.
+- For issues and specs, read `docs/agents/issue-tracker.md`.
+- For issue triage, read `docs/agents/triage-labels.md`.
+- Before changing gameplay rules or domain terminology, read `CONTEXT.md` and relevant decisions under `docs/adr/`. For spell language changes, read `docs/adr/0001-composable-spell-instructions.md`.
+- For domain documentation structure, follow `docs/agents/domain.md`.
